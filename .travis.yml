@@ -1,0 +1,47 @@
+git:
+  submodules: true
+  depth: 3
+language: cpp
+matrix:
+  include:
+    - os: linux
+      dist: bionic
+      name: Ubuntu 18.04
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-bionic-8
+          packages:
+            - clang-8
+            - libc++abi-8-dev
+            - libc++-8-dev
+            - tree
+
+
+cache:
+  directories:
+    - ${HOME}/vcpkg/installed
+
+before_install:
+  - export CC=gcc-7 CXX=g++-7
+install:
+  - | # replace cmake
+    sudo rm -rf $(which cmake)
+    sudo bash ./scripts/install-cmake-3.15.sh
+    echo $(which cmake)
+  - | # prepare vcpkg
+    git clone https://github.com/Microsoft/vcpkg.git
+    ./bootstrap-vcpkg.sh
+before_script:
+  - export CC=clang-8 CXX=clang-8
+  # triplet customization
+  - cp ${TRAVIS_BUILD_DIR}/x64-linux.cmake ./triplets/x64-linux.cmake
+script:
+  # install required packages
+  - export LD_LIBRARY_PATH="$(pwd)/installed/x64-linux/lib"
+  - mkdir -p build && pushd build
+  - cmake .. -DCMAKE_TOOLCHAIN_FILE="${HOME}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+  # codegen and build
+  - cmake --build . --target run_protoc_cpp
+  - cmake --build . --config debug
