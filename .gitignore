@@ -13,3 +13,8 @@ _deps
 /cmake-build-vcpkg/
 /CMakeFiles/
 /Testing/
+/cmake-build-vcpkg/
+/cmake-build-debug/
+simpleDPI
+/.cmake/
+/.idea/
