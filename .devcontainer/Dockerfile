@@ -16,5 +16,5 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install build-essential cmake ninja-build pkg-config gdb cppcheck valgrind clang lldb llvm \
     && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir /usr/local/vcpkg && git clone https://github.com/microsoft/vcpkg.git /usr/local/vcpkg &&/usr/local/vcpkg/bootstrap-vcpkg.sh
-RUN /usr/local/vcpkg/vcpkg integrate install
+#RUN mkdir /usr/local/vcpkg && git clone https://github.com/microsoft/vcpkg.git /usr/local/vcpkg &&/usr/local/vcpkg/bootstrap-vcpkg.sh
+#RUN /usr/local/vcpkg/vcpkg integrate install
